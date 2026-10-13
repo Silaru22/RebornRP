@@ -25,6 +25,8 @@ services:
   teable-db:
     image: postgres:15.4
     restart: unless-stopped
+    ports:
+      - '${POSTGRES_BIND_ADDRESS:-127.0.0.1}:${POSTGRES_PUBLISHED_PORT:-5432}:5432'
     expose:
       - '5432'
     env_file:

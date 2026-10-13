@@ -33,8 +33,10 @@ Run `deploy/windows/enable-wsl.ps1` from an elevated PowerShell session, restart
 then install Ubuntu. The feature script never restarts Windows itself. Store the distribution on a
 non-system drive and apply the CPU and RAM limits before starting Teable.
 
-Do not expose PostgreSQL or Redis to the LAN or Internet. Only publish the Teable HTTP port during
-the initial migration. Add HTTPS before allowing access from outside the local network.
+Do not expose PostgreSQL or Redis to the LAN or Internet. PostgreSQL is published on
+`127.0.0.1:5432` only so the Windows-hosted bot can reach it; Redis remains internal to Docker.
+Only publish the Teable HTTP port during the initial migration. Add HTTPS before allowing access
+from outside the local network.
 
 ## Teable bootstrap
 
