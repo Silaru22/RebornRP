@@ -5,10 +5,7 @@ from discord.ext.commands._types import BotT
 
 from src.common_tools import MissingTechAdminRole
 from src.config import settings
-from src.economy.cog import EconomyCog
 from src.logger import reborn_logger
-from src.quents.cog import QuentsCog
-from src.server_tools.cog import ServerToolsCog
 
 
 class MyBot(Bot):
@@ -25,10 +22,16 @@ class MyBot(Bot):
 
     async def _setup_extensions(self) -> None:
         if settings.enable_questionnaire_commands:
+            from src.quents.cog import QuentsCog  # noqa: PLC0415
+
             await self.add_cog(QuentsCog(self))
         if settings.enable_economy_commands:
+            from src.economy.cog import EconomyCog  # noqa: PLC0415
+
             await self.add_cog(EconomyCog(self))
         if settings.enable_whitelist_command:
+            from src.server_tools.cog import ServerToolsCog  # noqa: PLC0415
+
             await self.add_cog(ServerToolsCog(self))
 
     async def on_command_error(self, context: Context[BotT], exception: errors.CommandError) -> None:

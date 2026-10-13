@@ -10,6 +10,7 @@ wheels/
 .venv
 
 .env
+logs/
 
 # Local Teable runtime data and secrets
 deploy/teable/.env
