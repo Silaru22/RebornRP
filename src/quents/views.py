@@ -125,14 +125,13 @@ class QuentSubmitView(discord.ui.View):
             msg = 'Квента не найдена в базе!'
             raise ValidationError(msg)
 
-        return QuentRecordSchema.model_validate(records[0]['fields'])
+        return QuentRecordSchema.from_teable_record(records[0])
 
     async def _update_status(self, quent_record_id: str) -> QuentRecordSchema:
         response = await teable.update_record(
             Tables.users(), quent_record_id, {'status': StatusEnum.approved.value}
         )
-        record = response.json()['fields']
-        return QuentRecordSchema.model_validate(record)
+        return QuentRecordSchema.from_teable_record(response.json())
 
     async def _log_to_discord(
         self, guild: discord.Guild, user: discord.Member, quent_data: QuentRecordSchema

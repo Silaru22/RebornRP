@@ -63,6 +63,18 @@ WSL alive while Docker restart policies supervise Teable, PostgreSQL, and Redis.
 The exported base does not contain the questionnaire table expected by the bot. Create or migrate
 that table before enabling the questionnaire commands.
 
+## Teable users and permissions
+
+The self-hosted Community edition allows new users to register and lets the space owner invite them
+to `Reborn RP`. Assign `Просмотр` for read-only access or `Редактор` to edit records and views.
+`Создатель` additionally allows schema changes, while `Владелец` can manage the entire space.
+
+Direct user creation from the instance administration user list is a paid Teable feature in this
+release. Without that plan, leave account registration and space invitations enabled: each person
+creates their own password, then the owner invites the account and assigns its role. Email delivery
+is not configured in the local deployment, so use a controlled invite link or configure SMTP before
+relying on email invitations.
+
 ## Bot bootstrap
 
 1. Create a new Discord application owned by the organization.

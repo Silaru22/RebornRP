@@ -24,6 +24,13 @@ owned by the DayZ server administrator.
 - Git push of generated configuration is disabled by default.
 - The configuration generator refuses paths outside `configs_repo_path`.
 
+## Access control
+
+- Administrative slash commands require the Discord role `Тех. администратор`.
+- Role matching ignores letter case and whitespace, so `тех.администратор` is also accepted.
+- Questionnaire submission remains available to players; questionnaire review buttons retain the
+  existing curator, administrator, technical administrator, and event-manager checks.
+
 ## Repository ownership
 
 - This checkout has no Git remote connected to the former employee's GitLab or GitHub account.

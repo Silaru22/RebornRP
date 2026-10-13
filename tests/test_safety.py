@@ -4,11 +4,45 @@ from pathlib import Path
 
 import pytest
 
+from src.common_tools import _normalized_role_name
 from src.config import settings
 from src.economy.muta import MutantConfig
 from src.economy.utils import edit_config
+from src.quents.schemas import QuentRecordSchema
 from src.server_tools.whitelist import WhitelistServise
 from src.teable.sql import table_ref
+
+
+@pytest.mark.parametrize(
+    ('actual', 'expected'),
+    [
+        ('Тех. администратор', 'тех.администратор'),
+        (' ТЕХ.   АДМИНИСТРАТОР ', 'тех.администратор'),
+    ],
+)
+def test_role_name_normalization(actual: str, expected: str) -> None:
+    assert _normalized_role_name(actual) == _normalized_role_name(expected)
+
+
+def test_questionnaire_record_keeps_teable_record_id() -> None:
+    record = QuentRecordSchema.from_teable_record(
+        {
+            'id': 'recExample',
+            'fields': {
+                'nickname': 'Stalker',
+                'status': 'Создана',
+                'steam_id': '76561198000000000',
+                'quent_link': 'https://docs.google.com/example',
+                'birth_date': '01.01.1990',
+                'discord_slug': 'stalker',
+                'discord_id': '123',
+                'discord_channel_id': '456',
+                'character_name': 'Ivan Petrov',
+            },
+        }
+    )
+
+    assert record.id == 'recExample'
 
 
 def test_table_ref_quotes_valid_identifiers(monkeypatch: pytest.MonkeyPatch) -> None:

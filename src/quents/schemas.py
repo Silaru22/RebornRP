@@ -1,4 +1,5 @@
 from enum import StrEnum
+from typing import Any
 
 import discord
 from pydantic import BaseModel
@@ -24,6 +25,10 @@ class QuentRecordCreateSchema(BaseModel):
 
 class QuentRecordSchema(QuentRecordCreateSchema):
     id: str
+
+    @classmethod
+    def from_teable_record(cls, record: dict[str, Any]) -> 'QuentRecordSchema':
+        return cls.model_validate({'id': record['id'], **record['fields']})
 
 
 def get_init_quent_message() -> discord.Embed:

@@ -5,6 +5,7 @@ import discord
 from discord import ui
 
 from src import teable
+from src.common_tools import find_named_role
 from src.enums import RoleEnum
 from src.exceptions import NotFoundError, ValidationError
 from src.quents.schemas import QuentRecordCreateSchema, StatusEnum
@@ -143,7 +144,7 @@ class KventaModal(ui.Modal, title='Одобрение квенты'):
 
         staff_roles = [RoleEnum.kurator, RoleEnum.admin, RoleEnum.dev_admin, RoleEnum.iventer]
         for role_name in staff_roles:
-            role = discord.utils.get(guild.roles, name=role_name)
+            role = find_named_role(guild.roles, role_name)
             if role is None:
                 msg = 'Права доступа настроены не правильно!'
                 raise ValidationError(msg)

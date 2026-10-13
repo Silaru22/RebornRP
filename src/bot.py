@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext.commands import Bot, Context, errors
 from discord.ext.commands._types import BotT
 
+from src.common_tools import MissingTechAdminRole
 from src.config import settings
 from src.economy.cog import EconomyCog
 from src.logger import reborn_logger
@@ -36,6 +37,14 @@ class MyBot(Bot):
         interaction: discord.Interaction,
         error: app_commands.AppCommandError,
     ) -> None:
+        if isinstance(error, MissingTechAdminRole):
+            message = str(error)
+            if interaction.response.is_done():
+                await interaction.followup.send(message, ephemeral=True)
+            else:
+                await interaction.response.send_message(message, ephemeral=True)
+            return
+
         message = 'Команда не выполнена. Ошибка записана в журнал бота.'
         if interaction.response.is_done():
             await interaction.followup.send(message, ephemeral=True)
