@@ -26,7 +26,8 @@ For the current eight-core host, limit WSL2 to:
 
 - 2 virtual CPUs;
 - 6 GB RAM;
-- a virtual disk stored on the non-DayZ NVMe drive.
+- the Ubuntu virtual disk stored at `D:\WSL\RebornInfra`;
+- no bot, Teable, or WSL data on `E:`, which is reserved for the DayZ server architect.
 
 Run `deploy/windows/enable-wsl.ps1` from an elevated PowerShell session, restart Windows, and only
 then install Ubuntu. The feature script never restarts Windows itself. Store the distribution on a
@@ -48,6 +49,14 @@ the initial migration. Add HTTPS before allowing access from outside the local n
 9. Run `scripts/create_questionnaire_table.py` with the imported base ID and a fresh API token.
 10. Put the returned `teable_users_table_id` into the bot `.env`.
 11. Run `backup.sh` before upgrading Teable or changing the imported schema.
+
+On the prepared Reborn host, `bootstrap.sh` performs steps 3-4 under `/opt/reborn/teable`, creates
+fresh local secrets with mode `0600`, and binds the initial Teable UI to `127.0.0.1:3000` only. It
+never replaces an existing `.env` file.
+
+Install `start-infrastructure.sh` as `/usr/local/sbin/reborn-infrastructure`, then run
+`deploy/windows/install-infrastructure-task.ps1`. The per-user task starts at Windows logon and keeps
+WSL alive while Docker restart policies supervise Teable, PostgreSQL, and Redis.
 
 The exported base does not contain the questionnaire table expected by the bot. Create or migrate
 that table before enabling the questionnaire commands.

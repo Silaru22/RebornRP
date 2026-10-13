@@ -1,0 +1,7 @@
+[wsl2]
+processors=2
+memory=6GB
+swap=2GB
+localhostForwarding=true
+nestedVirtualization=false
+vmIdleTimeout=60000
