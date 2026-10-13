@@ -4,7 +4,7 @@ The deployment deliberately separates responsibilities:
 
 - DayZ and Workshop mods remain under the server administrator's control.
 - The Discord bot may update only the explicitly configured whitelist and server configuration files.
-- Teable, PostgreSQL, and Redis run in a small Linux VM.
+- Teable, PostgreSQL, and Redis run in a resource-limited WSL2 Ubuntu environment.
 - Nothing in this repository downloads, updates, or restarts DayZ mods.
 
 ## Ownership boundary
@@ -22,19 +22,23 @@ legacy GitLab remote, old deploy keys, or old personal access tokens.
 
 ## Resource limits
 
-For the current eight-core host, start the Linux VM with:
+For the current eight-core host, limit WSL2 to:
 
 - 2 virtual CPUs;
 - 6 GB RAM;
 - a virtual disk stored on the non-DayZ NVMe drive.
+
+Run `deploy/windows/enable-wsl.ps1` from an elevated PowerShell session, restart Windows, and only
+then install Ubuntu. The feature script never restarts Windows itself. Store the distribution on a
+non-system drive and apply the CPU and RAM limits before starting Teable.
 
 Do not expose PostgreSQL or Redis to the LAN or Internet. Only publish the Teable HTTP port during
 the initial migration. Add HTTPS before allowing access from outside the local network.
 
 ## Teable bootstrap
 
-1. Create an Ubuntu Server VM in Hyper-V.
-2. Install Docker Engine and the Compose plugin inside the VM.
+1. Install Ubuntu under WSL2 on a non-system NVMe drive.
+2. Install Docker Engine and the Compose plugin inside Ubuntu.
 3. Copy `deploy/teable` to the VM.
 4. Copy `.env.example` to `.env` and replace every placeholder secret and `PUBLIC_ORIGIN`.
 5. Start with `docker compose up -d`.
