@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from src.bot import MyBot
 from src.common_tools import _normalized_role_name
 from src.config import settings
 from src.economy.muta import MutantConfig
@@ -11,6 +12,14 @@ from src.economy.utils import edit_config
 from src.quents.schemas import QuentRecordSchema
 from src.server_tools.whitelist import WhitelistServise
 from src.teable.sql import table_ref
+
+
+def test_bot_does_not_request_privileged_intents() -> None:
+    bot = MyBot()
+
+    assert bot.intents.message_content is False
+    assert bot.intents.members is False
+    assert bot.intents.presences is False
 
 
 @pytest.mark.parametrize(

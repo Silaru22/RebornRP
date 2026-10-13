@@ -45,5 +45,10 @@ class Settings(BaseSettings):
     config_git_remote: str = 'origin'
     config_git_branch: str = 'main'
 
+    # Keep commands that write DayZ files disabled until their data mappings and
+    # target paths have been verified against the migrated Teable base.
+    enable_economy_commands: bool = False
+    enable_whitelist_command: bool = False
+
 
 settings = Settings()

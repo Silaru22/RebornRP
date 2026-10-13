@@ -22,6 +22,9 @@ owned by the DayZ server administrator.
 - JSON files are written atomically.
 - Manual mutant files ending in `_hnd.json` are preserved.
 - Git push of generated configuration is disabled by default.
+- Economy/configuration and whitelist commands are disabled by default; the questionnaire flow
+  can run without writing to the DayZ server directory.
+- The bot does not request Discord's privileged Message Content intent.
 - The configuration generator refuses paths outside `configs_repo_path`.
 
 ## Access control

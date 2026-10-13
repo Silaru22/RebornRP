@@ -14,7 +14,6 @@ from src.server_tools.cog import ServerToolsCog
 class MyBot(Bot):
     def __init__(self) -> None:
         intents = discord.Intents.default()
-        intents.message_content = True
         super().__init__('/', intents=intents)
         self.tree.on_error = self.on_app_command_error  # type: ignore[method-assign]
 
@@ -25,9 +24,11 @@ class MyBot(Bot):
         await self.tree.sync(guild=settings.reborn_guild_obj)
 
     async def _setup_extensions(self) -> None:
-        await self.add_cog(EconomyCog(self))
         await self.add_cog(QuentsCog(self))
-        await self.add_cog(ServerToolsCog(self))
+        if settings.enable_economy_commands:
+            await self.add_cog(EconomyCog(self))
+        if settings.enable_whitelist_command:
+            await self.add_cog(ServerToolsCog(self))
 
     async def on_command_error(self, context: Context[BotT], exception: errors.CommandError) -> None:
         return await super().on_command_error(context, exception)
