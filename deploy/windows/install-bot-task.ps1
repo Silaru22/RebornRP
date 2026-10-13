@@ -1,4 +1,5 @@
-# Run this script from an elevated PowerShell session after the bot has been tested manually.
+# Run this script after the bot has been tested manually. It installs a per-user logon task,
+# matching the local Teable infrastructure task and avoiding unnecessary administrator rights.
 $ErrorActionPreference = 'Stop'
 
 $taskName = 'RebornDiscordBot'
@@ -7,12 +8,12 @@ $powerShell = (Get-Command powershell.exe).Source
 
 $action = New-ScheduledTaskAction `
     -Execute $powerShell `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$runner`""
-$trigger = New-ScheduledTaskTrigger -AtStartup
+    -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
+$trigger = New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
 $principal = New-ScheduledTaskPrincipal `
-    -UserId 'SYSTEM' `
-    -LogonType ServiceAccount `
-    -RunLevel Highest
+    -UserId $env:USERNAME `
+    -LogonType Interactive `
+    -RunLevel Limited
 $settings = New-ScheduledTaskSettingsSet `
     -RestartCount 20 `
     -RestartInterval (New-TimeSpan -Minutes 1) `

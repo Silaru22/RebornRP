@@ -85,4 +85,5 @@ relying on email invitations.
    owned by the organization with fresh credentials.
 5. Recreate `.venv`, install dependencies, and run `deploy/windows/run-bot.ps1` manually.
 6. Test every Discord command in a test guild.
-7. Only then run `deploy/windows/install-bot-task.ps1` from an elevated PowerShell session.
+7. Only then run `deploy/windows/install-bot-task.ps1`. It starts the bot at user logon without
+   requiring administrator rights.
