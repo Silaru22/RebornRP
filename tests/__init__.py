@@ -1,0 +1,1 @@
+"""Reborn bot tests."""

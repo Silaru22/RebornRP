@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+.env
+
+# Local Teable runtime data and secrets
+deploy/teable/.env
+deploy/teable/data/
+deploy/teable/backups/
+
+# Interrupted atomic writes
+*.reborn.tmp

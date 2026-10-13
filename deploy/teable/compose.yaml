@@ -1,0 +1,53 @@
+services:
+  teable:
+    image: ${TEABLE_IMAGE}
+    restart: unless-stopped
+    ports:
+      - '${TEABLE_BIND_ADDRESS:-0.0.0.0}:${TEABLE_PORT:-3000}:3000'
+    env_file:
+      - .env
+    environment:
+      NEXT_ENV_IMAGES_ALL_REMOTE: 'true'
+    volumes:
+      - ./data/teable-assets:/app/.assets
+    depends_on:
+      teable-db:
+        condition: service_healthy
+      teable-cache:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
+      start_period: 15s
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  teable-db:
+    image: postgres:15.4
+    restart: unless-stopped
+    expose:
+      - '5432'
+    env_file:
+      - .env
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  teable-cache:
+    image: redis:7.2.4
+    restart: unless-stopped
+    expose:
+      - '6379'
+    env_file:
+      - .env
+    volumes:
+      - ./data/redis:/data
+    command: ['redis-server', '--appendonly', 'yes', '--requirepass', '${REDIS_PASSWORD}']
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--no-auth-warning', '-a', '${REDIS_PASSWORD}', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 20

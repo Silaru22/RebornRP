@@ -1,0 +1,2 @@
+class ActiveQuentOrTicketError(Exception):
+    pass
