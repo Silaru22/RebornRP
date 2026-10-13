@@ -24,7 +24,8 @@ class MyBot(Bot):
         await self.tree.sync(guild=settings.reborn_guild_obj)
 
     async def _setup_extensions(self) -> None:
-        await self.add_cog(QuentsCog(self))
+        if settings.enable_questionnaire_commands:
+            await self.add_cog(QuentsCog(self))
         if settings.enable_economy_commands:
             await self.add_cog(EconomyCog(self))
         if settings.enable_whitelist_command:
