@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import discord
-from pydantic import SecretStr
+from pydantic import AliasChoices, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 DOTENV = Path(__file__).parent.parent / '.env'
@@ -10,7 +10,7 @@ DOTENV = Path(__file__).parent.parent / '.env'
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=DOTENV, env_file_encoding='utf-8')
 
-    bot_key: SecretStr
+    bot_key: SecretStr = Field(validation_alias=AliasChoices('discord_bot_token', 'bot_key'))
     reborn_guild_id: int
 
     @property
